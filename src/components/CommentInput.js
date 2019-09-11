@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Input, List, Grid, Avatar} from 'antd'
 import 'antd/dist/antd.css'
-import img from '../assets/1.jpg'
+
 
 const { TextArea } = Input;
 
@@ -10,7 +10,8 @@ export default class CommentInput extends Component{
     static propTypes = {
         username: PropTypes.any,
         onSubmit: PropTypes.func,
-        onUserNameInputBlur: PropTypes.func
+        onUserNameInputBlur: PropTypes.func,
+        header: PropTypes.any
     }
 
     static defaultProps = {
@@ -21,7 +22,8 @@ export default class CommentInput extends Component{
         super(props)
         this.state = {
             username: props.username,//从 props 上取 username 字段
-            content: ''
+            content: '',
+            header: props.header//从 props 上取 头像
         }
         this.headerList = []
         for(let i= 0; i < 4; i++){
@@ -30,7 +32,7 @@ export default class CommentInput extends Component{
     }
 
     componentDidMount(){
-        this.textarea.focus()
+        this.TextArea.focus()
     }
 
     handldUsernameBlur(event){
@@ -56,10 +58,17 @@ export default class CommentInput extends Component{
             this.props.onSubmit({
                 username: this.state.username,
                 content: this.state.content,
-                createdTime: +new Date()
+                createdTime: +new Date(),
+                header: this.state.header
             })
         }
         this.setState({content: ''})
+    }
+
+    handleAvatar(event){
+        this.setState({
+            header: event.target.src
+        })
     }
 
     render(){
@@ -78,17 +87,23 @@ export default class CommentInput extends Component{
                     <span className='comment-filed-name'>评论内容</span>
                     <div className='comment-field-input'>
                         <TextArea placeholder="输入内容" autosize 
-                            ref={(textarea)=> this.textarea = textarea} 
+                            ref={(TextArea)=> this.TextArea = TextArea} 
                             value={this.state.content}
                             onChange={this.handleContentChange.bind(this)}/>
                     </div>
                 </div>
                 <div className='comment-fild'>
-                    <span className='comment-fild-avatar'>选择头像</span>
-                    <Avatar src={img}></Avatar>
-                    <Avatar src={this.headerList[1]}></Avatar>
-                    <Avatar src={this.headerList[2]}></Avatar>
-                    <Avatar src={this.headerList[3]}></Avatar>
+                    <div className='comment-fild-avatar'>选择头像</div>
+                    
+                    <Avatar src={this.headerList[0]} 
+                            onClick={this.handleAvatar.bind(this)}></Avatar>
+                    <Avatar src={this.headerList[1]}
+                            onClick={this.handleAvatar.bind(this)}></Avatar>
+                    <Avatar src={this.headerList[2]}
+                            onClick={this.handleAvatar.bind(this)}></Avatar>
+                    <Avatar src={this.headerList[3]}
+                            onClick={this.handleAvatar.bind(this)}></Avatar>
+                    <div>已选择头像:<Avatar src={this.state.header}></Avatar></div>
 
                 </div>
                 <div className='comment-field-button'>

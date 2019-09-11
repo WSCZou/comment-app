@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { Avatar } from 'antd'
 class Comment extends Component {
   static propType = {
     comment: PropTypes.object.isRequired,
@@ -55,6 +56,7 @@ class Comment extends Component {
     return (
       <div className='comment'>
         <div className='comment-user'>
+          <div><Avatar src={comment.header}></Avatar></div>
           <span className='comment-username'>
             {comment.username}
           </span>：

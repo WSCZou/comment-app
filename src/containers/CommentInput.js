@@ -14,7 +14,9 @@ class CommentInputContainer extends Component {
 
   constructor () {
     super()
-    this.state = { username: '' }
+    this.state = { username: '' ,
+                   header:''
+                  }
   }
 
   componentWillMount () {
@@ -30,6 +32,15 @@ class CommentInputContainer extends Component {
       this.setState({ username })
     }
   }
+
+  /*_loadHeader(){
+    const header = localStorage.getItem('header')
+    if (header) {
+      this.setState({ header })
+    }
+  }*/
+
+
 
   _saveUsername (username) {
     // 看看 render 方法的 onUserNameInputBlur
@@ -58,7 +69,8 @@ class CommentInputContainer extends Component {
       <CommentInput
         username={this.state.username}
         onUserNameInputBlur={this._saveUsername.bind(this)}
-        onSubmit={this.handleSubmitComment.bind(this)} />
+        onSubmit={this.handleSubmitComment.bind(this)} 
+        header={this.state.header} />
     )
   }
 }
