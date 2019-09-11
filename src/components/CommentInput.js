@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { Button, Input, List, Grid, Avatar} from 'antd'
+import 'antd/dist/antd.css'
+import img from '../assets/1.jpg'
+
+const { TextArea } = Input;
 
 export default class CommentInput extends Component{
     static propTypes = {
@@ -17,6 +22,10 @@ export default class CommentInput extends Component{
         this.state = {
             username: props.username,//从 props 上取 username 字段
             content: ''
+        }
+        this.headerList = []
+        for(let i= 0; i < 4; i++){
+            this.headerList.push(require(`../assets/${i+1}.jpg`))
         }
     }
 
@@ -59,7 +68,7 @@ export default class CommentInput extends Component{
                 <div className='comment-field'>
                     <span className='comment-field-name'>用户名</span>
                     <div className='comment-field-input'>
-                        <input 
+                        <Input placeholder="输入用户名" allowClear
                             value={this.state.username}
                             onBlur={this.handldUsernameBlur.bind(this)}
                             onChange={this.handleUsernameChange.bind(this)}/>
@@ -68,19 +77,29 @@ export default class CommentInput extends Component{
                 <div className='comment-filed'>
                     <span className='comment-filed-name'>评论内容</span>
                     <div className='comment-field-input'>
-                        <textarea
+                        <TextArea placeholder="输入内容" autosize 
                             ref={(textarea)=> this.textarea = textarea} 
                             value={this.state.content}
                             onChange={this.handleContentChange.bind(this)}/>
                     </div>
                 </div>
+                <div className='comment-fild'>
+                    <span className='comment-fild-avatar'>选择头像</span>
+                    <Avatar src={img}></Avatar>
+                    <Avatar src={this.headerList[1]}></Avatar>
+                    <Avatar src={this.headerList[2]}></Avatar>
+                    <Avatar src={this.headerList[3]}></Avatar>
+
+                </div>
                 <div className='comment-field-button'>
-                    <button
+                    <Button type='primary'
                         onClick={this.handleSubmit.bind(this)}>
                         发布
-                    </button>
+                    </Button>
                 </div>
             </div>
+
+            
         )
     }
 }
