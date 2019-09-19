@@ -22,10 +22,7 @@ body {
   margin-bottom: 10px;
 }
 
-.comment-field {
-  margin-bottom: 15px;
-  display: flex;
-}
+
 
 .comment-field .comment-field-name {
   display: flex;

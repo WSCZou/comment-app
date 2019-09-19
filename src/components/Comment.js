@@ -49,6 +49,15 @@ class Comment extends Component {
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;")
       .replace(/`([\S\s]+?)`/g, '<code>$1</code>')
+      .replace(/(http:\/\/[\w.\/]+)(?![^<]+>)/gi,"<a href='$1'>$1</a>")
+  }
+
+  _getProcessedEmail(email){
+
+  }
+
+  handleAvatar(){
+    
   }
 
   render () {
@@ -56,7 +65,7 @@ class Comment extends Component {
     return (
       <div className='comment'>
         <div className='comment-user'>
-          <div><Avatar src={comment.header}></Avatar></div>
+          <div><a href={"mailto:"+comment.email}><Avatar src={comment.header}></Avatar></a></div>
           <span className='comment-username'>
             {comment.username}
           </span>：

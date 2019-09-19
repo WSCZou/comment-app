@@ -9,13 +9,17 @@ const { TextArea } = Input;
 export default class CommentInput extends Component{
     static propTypes = {
         username: PropTypes.any,
+        email:PropTypes.any,
         onSubmit: PropTypes.func,
         onUserNameInputBlur: PropTypes.func,
-        header: PropTypes.any
+        header: PropTypes.any,
+        onEmailInputBlur:PropTypes.func
+
     }
 
     static defaultProps = {
-        username: ''
+        username: '',
+        email:''
     }
 
     constructor(props){
@@ -23,7 +27,8 @@ export default class CommentInput extends Component{
         this.state = {
             username: props.username,//从 props 上取 username 字段
             content: '',
-            header: props.header//从 props 上取 头像
+            header: props.header,//从 props 上取 头像
+            email:props.email//从 props 上取 email 字段
         }
         this.headerList = []
         for(let i= 0; i < 4; i++){
@@ -35,15 +40,27 @@ export default class CommentInput extends Component{
         this.TextArea.focus()
     }
 
-    handldUsernameBlur(event){
+    handleUsernameBlur(event){
         if(this.props.onUserNameInputBlur){
             this.props.onUserNameInputBlur(event.target.value)
+        }
+    }
+
+    handldEmailBlur(event){
+        if(this.props.onEmailInputBlur){
+            this.props.onEmailInputBlur(event.target.value)
         }
     }
 
     handleUsernameChange(event){
         this.setState({
             username: event.target.value
+        })
+    }
+
+    handleEmailChange(event){
+        this.setState({
+            email: event.target.value
         })
     }
     
@@ -57,6 +74,7 @@ export default class CommentInput extends Component{
         if(this.props.onSubmit){
             this.props.onSubmit({
                 username: this.state.username,
+                email: this.state.email,
                 content: this.state.content,
                 createdTime: +new Date(),
                 header: this.state.header
@@ -72,6 +90,10 @@ export default class CommentInput extends Component{
     }
 
     render(){
+        const listHeader = !this.state.header ? '请选择头像':(
+            <div>已选择头像:<Avatar src={this.state.header}></Avatar></div>
+        )
+
         return(
             <div className='comment-input'>
                 <div className='comment-field'>
@@ -79,8 +101,17 @@ export default class CommentInput extends Component{
                     <div className='comment-field-input'>
                         <Input placeholder="输入用户名" allowClear
                             value={this.state.username}
-                            onBlur={this.handldUsernameBlur.bind(this)}
+                            onBlur={this.handleUsernameBlur.bind(this)}
                             onChange={this.handleUsernameChange.bind(this)}/>
+                    </div>
+                </div>
+                <div className='e-mail-field'>
+                    <span className='e-mail-field-name'>邮箱地址</span>
+                    <div className='comment-field-input'>
+                        <Input placeholder="输入邮箱地址" allowClear
+                            value={this.state.email}
+                            onBlur={this.handldEmailBlur.bind(this)}
+                            onChange={this.handleEmailChange.bind(this)}/>
                     </div>
                 </div>
                 <div className='comment-filed'>
@@ -93,7 +124,9 @@ export default class CommentInput extends Component{
                     </div>
                 </div>
                 <div className='comment-fild'>
-                    <div className='comment-fild-avatar'>选择头像</div>
+                    <div className='comment-fild-avatar'>{!this.state.header ? '请选择头像':(
+                        <div>已选择头像:<Avatar src={this.state.header}></Avatar></div>)}
+                    </div>
                     
                     <Avatar src={this.headerList[0]} 
                             onClick={this.handleAvatar.bind(this)}></Avatar>
@@ -103,7 +136,7 @@ export default class CommentInput extends Component{
                             onClick={this.handleAvatar.bind(this)}></Avatar>
                     <Avatar src={this.headerList[3]}
                             onClick={this.handleAvatar.bind(this)}></Avatar>
-                    <div>已选择头像:<Avatar src={this.state.header}></Avatar></div>
+                    
 
                 </div>
                 <div className='comment-field-button'>

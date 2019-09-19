@@ -15,12 +15,14 @@ class CommentInputContainer extends Component {
   constructor () {
     super()
     this.state = { username: '' ,
-                   header:''
+                   header:'',
+                   email:''
                   }
   }
 
   componentWillMount () {
     // componentWillMount 生命周期中初始化用户名
+    this._loadEmail()
     this._loadUsername()
   }
 
@@ -32,6 +34,17 @@ class CommentInputContainer extends Component {
       this.setState({ username })
     }
   }
+
+  _loadEmail () {
+    // 从 LocalStorage 加载 email
+    // 然后可以在 render 方法中传给 CommentInput
+    const email = localStorage.getItem('email')
+    if (email) {
+      this.setState({ email })
+    }
+  }
+
+
 
   /*_loadHeader(){
     const header = localStorage.getItem('header')
@@ -46,6 +59,10 @@ class CommentInputContainer extends Component {
     // 看看 render 方法的 onUserNameInputBlur
     // 这个方法会在用户名输入框 blur 的时候的被调用，保存用户名
     localStorage.setItem('username', username)
+  }
+
+  _saveEmail(email){
+    localStorage.setItem('email', email)
   }
 
   handleSubmitComment (comment) {
@@ -68,9 +85,11 @@ class CommentInputContainer extends Component {
     return (
       <CommentInput
         username={this.state.username}
+        email={this.state.email}
         onUserNameInputBlur={this._saveUsername.bind(this)}
         onSubmit={this.handleSubmitComment.bind(this)} 
-        header={this.state.header} />
+        header={this.state.header} 
+        onEmailInputBlur={this._saveEmail.bind(this)}/>
     )
   }
 }
