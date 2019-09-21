@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Avatar } from 'antd'
+import { Avatar, Input } from 'antd'
 class Comment extends Component {
   static propType = {
     comment: PropTypes.object.isRequired,
@@ -10,7 +10,8 @@ class Comment extends Component {
 
   constructor(){
     super()
-    this.state = { timeString: ''}
+    this.state = { timeString: '',
+                   isReply:false}
   }
 
   componentWillMount(){
@@ -41,6 +42,19 @@ class Comment extends Component {
     }
   }
 
+  handleReplyComment(){
+    this.setState({
+      isReply:true
+    })
+  }
+
+  creatInput(){
+    if(this.state.isReply)
+      {return  '<Input>' }
+    else
+      return ''
+    
+  }
   _getProcessedContent (content) {
     return content
       .replace(/&/g, "&amp;")
@@ -50,14 +64,6 @@ class Comment extends Component {
       .replace(/'/g, "&#039;")
       .replace(/`([\S\s]+?)`/g, '<code>$1</code>')
       .replace(/(http:\/\/[\w.\/]+)(?![^<]+>)/gi,"<a href='$1'>$1</a>")
-  }
-
-  _getProcessedEmail(email){
-
-  }
-
-  handleAvatar(){
-    
   }
 
   render () {
@@ -81,6 +87,15 @@ class Comment extends Component {
           onClick={this.handleDeleteComment.bind(this)}>
           删除
         </span>
+        <span 
+          className='comment-reply'
+          onClick={this.handleReplyComment.bind(this)}>
+          回复
+        </span>
+        <div className='reply'
+             dangerouslySetInnerHTML={{
+              __html: this.creatInput()}
+             }/>
       </div>
     )
   }

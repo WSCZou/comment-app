@@ -2,6 +2,7 @@
 const INIT_COMMENTS = 'INIT_COMMENTS'
 const ADD_COMMENT = 'ADD_COMMENT'
 const DELETE_COMMENT = 'DELETE_COMMENT'
+const REPLY_COMMENT = 'REPLY_COMMENT'
 
 //reducer
 export default function(state, action){//相当于34节中的 stateChanger
@@ -15,7 +16,7 @@ export default function(state, action){//相当于34节中的 stateChanger
         case ADD_COMMENT:
             //新增评论
             return {
-                comments:[...state.comments,action.comment]
+                comments:[action.comment,...state.comments]
             }
         case DELETE_COMMENT:
             //删除评论
@@ -23,6 +24,13 @@ export default function(state, action){//相当于34节中的 stateChanger
                 comments:[
                     ...state.comments.slice(0,action.commentIndex),
                     ...state.comments.slice(action.commentIndex+1)
+                ]
+            }
+        case REPLY_COMMENT:
+            //回复评论
+            return{
+                comments:[
+                    ...state.comments.splice(action.commentIndex,0,action.comment)
                 ]
             }
         default:
@@ -43,3 +51,6 @@ export const deleteComment = (commentIndex) => {
     return {type:DELETE_COMMENT, commentIndex}
 }
 
+export const replyComments = (comment,commentIndex) => {
+    return {type:REPLY_COMMENT, comment, commentIndex}
+}
