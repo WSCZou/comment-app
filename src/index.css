@@ -104,19 +104,11 @@ body {
   color: #00a3cf;
 }
 
-.comment:hover .comment-reply{
+.comment:hover {
   color: #00a3cf;
 }
 
-.comment-reply {
-  padding-right: 30px;
-  position: absolute;
-  right: 0;
-  top: 0;
-  color: transparent;
-  font-size: 12px;
-  cursor: pointer;
-}
+
 
 .comment-delete {
   position: absolute;

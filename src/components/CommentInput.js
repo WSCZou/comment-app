@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Input, List, Grid, Avatar} from 'antd'
+import { Button, Input, Avatar} from 'antd'
 import 'antd/dist/antd.css'
 
 

@@ -1,17 +1,21 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Avatar, Input } from 'antd'
+import { Avatar, Input, Button} from 'antd'
+import CommentInput from './CommentInput'
+
 class Comment extends Component {
   static propType = {
     comment: PropTypes.object.isRequired,
     onDeleteComment: PropTypes.func,
-    index: PropTypes.number
+    index: PropTypes.number,
+    onPostReply: PropTypes.func
   }
 
   constructor(){
     super()
     this.state = { timeString: '',
-                   isReply:false}
+                   isReply:false,
+                   content: ''}
   }
 
   componentWillMount(){
@@ -44,16 +48,46 @@ class Comment extends Component {
 
   handleReplyComment(){
     this.setState({
-      isReply:true
+      isReply:!this.state.isReply
+    })
+  }
+
+  handleContentChange(event){
+    this.setState({
+        content: event.target.value
+    })
+}
+
+  handlepostReply(){
+    if(this.props.onPostReply){
+      this.props.onPostReply(this.props.index)
+    }
+  }
+
+  cancelReply(){
+    this.setState({
+      isReply:false
     })
   }
 
   creatInput(){
     if(this.state.isReply)
-      {return  '<Input>' }
-    else
-      return ''
-    
+      {return (
+        /*<div>
+              <Input value={this.state.content}
+                     onChange={this.handleContentChange.bind(this)} />
+              <Button type='primary'
+                onClick={this.handlepostReply.bind(this)}>
+                回复
+              </Button>
+              <Button type='primary'
+                onClick={this.cancelReply.bind(this)}>
+                取消回复
+              </Button>
+        </div>*/
+        <CommentInput/>
+              ) }
+      
   }
   _getProcessedContent (content) {
     return content
@@ -87,15 +121,13 @@ class Comment extends Component {
           onClick={this.handleDeleteComment.bind(this)}>
           删除
         </span>
-        <span 
+        <Button type='primary'
           className='comment-reply'
           onClick={this.handleReplyComment.bind(this)}>
-          回复
-        </span>
+          {this.state.isReply ? '取消回复' : '回复'}
+        </Button>
         <div className='reply'
-             dangerouslySetInnerHTML={{
-              __html: this.creatInput()}
-             }/>
+        >{this.creatInput()}</div>
       </div>
     )
   }

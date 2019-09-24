@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import CommentInput from '../components/CommentInput'
-
+import CommentInput from '../components/Comment'
 import { addComment } from '../reducers/comments'
 
-// CommentInputContainer
+// CommentReplyContainer
 // 负责用户名的加载、保存，评论的发布
-class CommentContainer extends Component {
+class CommentReplyContainer extends Component {
   static propTypes = {
     comments: PropTypes.array,
     onSubmit: PropTypes.func
@@ -112,4 +111,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CommentContainer)
+)(CommentReplyContainer)
