@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Avatar, Input, Button} from 'antd'
+import { Avatar, Button} from 'antd'
 import CommentInput from './CommentInput'
 
 class Comment extends Component {
@@ -13,9 +13,11 @@ class Comment extends Component {
 
   constructor(){
     super()
-    this.state = { timeString: '',
-                   isReply:false,
-                   content: ''}
+    this.state = {
+      timeString: '',
+      isReply: false,
+      content: ''
+    }
   }
 
   componentWillMount(){
@@ -32,6 +34,7 @@ class Comment extends Component {
 
   _updateTimeString(){
     const comment = this.props.comment
+    console.log(comment)
     const duration = (+Date.now() - comment.createdTime) / 1000
     this.setState({
       timeString: duration > 60
@@ -87,7 +90,7 @@ class Comment extends Component {
         </div>*/
         <CommentInput/>
               ) }
-      
+
   }
   _getProcessedContent (content) {
     return content
@@ -116,7 +119,7 @@ class Comment extends Component {
         <span className='comment-createdtime'>
           {this.state.timeString}
         </span>
-        <span 
+        <span
           className='comment-delete'
           onClick={this.handleDeleteComment.bind(this)}>
           删除

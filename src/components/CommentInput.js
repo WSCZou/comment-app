@@ -7,45 +7,43 @@ import 'antd/dist/antd.css'
 const { TextArea } = Input;
 
 export default class CommentInput extends Component{
-    static propTypes = {
-        username: PropTypes.any,
-        email:PropTypes.any,
-        onSubmit: PropTypes.func,
-        onUserNameInputBlur: PropTypes.func,
-        header: PropTypes.any,
-        onEmailInputBlur:PropTypes.func
+  static propTypes = {
+    username: PropTypes.any,
+    email:PropTypes.any,
+    onSubmit: PropTypes.func,
+    onUserNameInputBlur: PropTypes.func,
+    header: PropTypes.any,
+    onEmailInputBlur:PropTypes.func
+  }
 
+  static defaultProps = {
+    username: '',
+    email:''
+  }
+
+  constructor(props){
+    super(props)
+    this.state = {
+      username: props.username,//从 props 上取 username 字段
+      content: '',
+      header: props.header,//从 props 上取 头像
+      email: props.email//从 props 上取 email 字段
     }
-
-    static defaultProps = {
-        username: '',
-        email:''
+    this.headerList = []
+    for(let i= 0; i < 4; i++){
+      this.headerList.push(require(`../assets/${i+1}.jpg`))
     }
+  }
 
-    constructor(props){
-        super(props)
-        this.state = {
-            username: props.username,//从 props 上取 username 字段
-            content: '',
-            header: props.header,//从 props 上取 头像
-            email:props.email//从 props 上取 email 字段
-        }
-        this.headerList = []
-        for(let i= 0; i < 4; i++){
-            this.headerList.push(require(`../assets/${i+1}.jpg`))
-        }
+  componentDidMount(){
+    this.TextArea.focus()
+  }
+
+  handleUsernameBlur(event){
+    if (this.props.onUserNameInputBlur) {
+      this.props.onUserNameInputBlur(event.target.value)
     }
-
-    componentDidMount(){
-        this.TextArea.focus()
-    }
-
-    handleUsernameBlur(event){
-        if(this.props.onUserNameInputBlur){
-            this.props.onUserNameInputBlur(event.target.value)
-        }
-    }
-
+  }
     handldEmailBlur(event){
         if(this.props.onEmailInputBlur){
             this.props.onEmailInputBlur(event.target.value)
@@ -63,7 +61,7 @@ export default class CommentInput extends Component{
             email: event.target.value
         })
     }
-    
+
     handleContentChange(event){
         this.setState({
             content: event.target.value
@@ -117,8 +115,8 @@ export default class CommentInput extends Component{
                 <div className='comment-filed'>
                     <span className='comment-filed-name'>评论内容</span>
                     <div className='comment-field-input'>
-                        <TextArea placeholder="输入内容" autosize 
-                            ref={(TextArea)=> this.TextArea = TextArea} 
+                        <TextArea placeholder="输入内容" autosize
+                            ref={(TextArea)=> this.TextArea = TextArea}
                             value={this.state.content}
                             onChange={this.handleContentChange.bind(this)}/>
                     </div>
@@ -127,8 +125,8 @@ export default class CommentInput extends Component{
                     <div className='comment-fild-avatar'>{!this.state.header ? '请选择头像':(
                         <div>已选择头像:<Avatar src={this.state.header}></Avatar></div>)}
                     </div>
-                    
-                    <Avatar src={this.headerList[0]} 
+
+                    <Avatar src={this.headerList[0]}
                             onClick={this.handleAvatar.bind(this)}></Avatar>
                     <Avatar src={this.headerList[1]}
                             onClick={this.handleAvatar.bind(this)}></Avatar>
@@ -136,7 +134,7 @@ export default class CommentInput extends Component{
                             onClick={this.handleAvatar.bind(this)}></Avatar>
                     <Avatar src={this.headerList[3]}
                             onClick={this.handleAvatar.bind(this)}></Avatar>
-                    
+
 
                 </div>
                 <div className='comment-field-button'>
@@ -147,7 +145,7 @@ export default class CommentInput extends Component{
                 </div>
             </div>
 
-            
+
         )
     }
 }

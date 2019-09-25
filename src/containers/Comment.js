@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import CommentInput from '../components/Comment'
+import CommentInput from '../components/CommentInput'
 import { addComment } from '../reducers/comments'
 
 // CommentReplyContainer
@@ -14,10 +14,11 @@ class CommentReplyContainer extends Component {
 
   constructor () {
     super()
-    this.state = { username: '' ,
-                   header:'',
-                   email:''
-                  }
+    this.state = {
+      username: '' ,
+      header: '',
+      email: ''
+    }
   }
 
   componentWillMount () {
@@ -87,8 +88,8 @@ class CommentReplyContainer extends Component {
         username={this.state.username}
         email={this.state.email}
         onUserNameInputBlur={this._saveUsername.bind(this)}
-        onSubmit={this.handleSubmitComment.bind(this)} 
-        header={this.state.header} 
+        onSubmit={this.handleSubmitComment.bind(this)}
+        header={this.state.header}
         onEmailInputBlur={this._saveEmail.bind(this)}/>
     )
   }
