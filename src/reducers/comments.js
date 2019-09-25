@@ -51,6 +51,6 @@ export const deleteComment = (commentIndex) => {
     return {type:DELETE_COMMENT, commentIndex}
 }
 
-export const replyComments = (comment,commentIndex) => {
+export const replyComment = (comment,commentIndex) => {
     return {type:REPLY_COMMENT, comment, commentIndex}
 }

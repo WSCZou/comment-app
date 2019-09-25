@@ -72,7 +72,7 @@ export default class CommentInput extends Component{
 
     handleSubmit(){
         if(this.props.onSubmit){
-            this.props.onSubmit({
+            this.props.onSubmit({//这里传的是comment这个对象
                 username: this.state.username,
                 email: this.state.email,
                 content: this.state.content,

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Avatar, Input, Button} from 'antd'
 import CommentInput from './CommentInput'
 
-class Comment extends Component {
+class CommentV1 extends Component {
   static propType = {
     comment: PropTypes.object.isRequired,
     onDeleteComment: PropTypes.func,
@@ -47,10 +47,13 @@ class Comment extends Component {
     }
   }
 
+//现在考虑comment怎么来 这个comment是要回复的评论 而 回复的内容comment怎么搞 ：要commentinput把数据传下来
   handleReplyComment(){
-    this.setState({
-      isReply:!this.state.isReply
-    })
+    if(this.props.onPostReply){
+        this.props.onPostReply(this.props.comment,this.props.index)
+        //console.log(this.props.comment)
+        //console.log(this.props.index)
+      }
   }
 
   handleContentChange(event){
@@ -59,37 +62,6 @@ class Comment extends Component {
     })
 }
 
-  handlepostReply(){
-    if(this.props.onPostReply){
-      this.props.onPostReply(this.props.index)
-    }
-  }
-
-  cancelReply(){
-    this.setState({
-      isReply:false
-    })
-  }
-
-  creatInput(){
-    if(this.state.isReply)
-      {return (
-        /*<div>
-              <Input value={this.state.content}
-                     onChange={this.handleContentChange.bind(this)} />
-              <Button type='primary'
-                onClick={this.handlepostReply.bind(this)}>
-                回复
-              </Button>
-              <Button type='primary'
-                onClick={this.cancelReply.bind(this)}>
-                取消回复
-              </Button>
-        </div>*/
-        <CommentInput/>
-              ) }
-      
-      }
   _getProcessedContent (content) {
     return content
       .replace(/&/g, "&amp;")
@@ -120,18 +92,17 @@ class Comment extends Component {
         <span 
           className='comment-delete'
           onClick={this.handleDeleteComment.bind(this)}>
-          删除
+            删除
         </span>
         <Button type='primary'
           className='comment-reply'
           onClick={this.handleReplyComment.bind(this)}>
-          {this.state.isReply ? '取消回复' : '回复'}
+            回复
         </Button>
-        <div className='reply'
-        >{this.creatInput()}</div>
+
       </div>
     )
   }
 }
 
-export default Comment
+export default CommentV1

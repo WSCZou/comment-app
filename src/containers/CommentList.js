@@ -2,16 +2,17 @@ import React,{ Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import CommentList from '../components/CommentList'
-import { initComments, deleteComment } from '../reducers/comments'
+import { initComments, deleteComment, replyComment } from '../reducers/comments'
 
 //CommentListContainer
 //一个 smart 组件，负责评论列表数据的加载，初始化，删除评论
 //沟通 commentlist 和 state
 class CommentListContainer extends Component{
     static propTypes = {
-        comments:PropTypes.array,
+        comments:PropTypes.array,//这个是initComments传的
         initComments:PropTypes.func,
-        onDeleteComment: PropTypes.func
+        onDeleteComment: PropTypes.func,
+        onReplyComment: PropTypes.func
     }
 
     componentWillMount(){
@@ -26,16 +27,18 @@ class CommentListContainer extends Component{
         //this.props.initComment 是 connect 传进来的
         //可以帮我们把数据初始化到 state 里面去
         this.props.initComments(comments)
+        console.log(this.props)
     }
 
     handleDeleteComment(index){
         const { comments } = this.props
+        console.log(this.props)
         //props 是不能变的，所以这里新建一个删除了特定下标的评论列表
         const newComments = [          //这里切片是因为要把新的评论保存到 LocalStorage
             ...comments.slice(0,index),
             ...comments.slice(index + 1)
         ]
-        console.log(newComments)
+        
         //保存最新的评论列表到 LocalStorage
         localStorage.setItem('comments', JSON.stringify(newComments))
         if(this.props.onDeleteComment){
@@ -44,12 +47,31 @@ class CommentListContainer extends Component{
             this.props.onDeleteComment(index)
         }
     }
+
+    handleReplyComment(comment,index){
+        const { comments } = this.props
+        console.log(this.props)
+        //props 是不能变的，所以这里新建一个回复了特定下标的评论列表
+        const newComments = [          //这里切片是因为要把新的评论保存到 LocalStorage
+            ...comments.splice(index,0,comment)
+        ]
+        //console.log(newComments)
+        //保存最新的评论列表到 LocalStorage
+        localStorage.setItem('comments', JSON.stringify(newComments))
+        if(this.props.onReplyComment){
+            //this.props.onReplyComment 是 connect 传进来的
+            //会 dispatch 一个 action 去回复评论
+            this.props.onReplyComment(comment,index)
+        }
+
+    }
     
     render(){
         return (
             <CommentList
                 comments={this.props.comments}
-                onDeleteComment={this.handleDeleteComment.bind(this)}/>
+                onDeleteComment={this.handleDeleteComment.bind(this)}
+                onReplyComment={this.handleReplyComment.bind(this)}/>
         )
     }
 }
@@ -72,6 +94,10 @@ const mapDispatchToProps = (dispatch) => {
         //删除评论
         onDeleteComment: (commentIndex) => {
             dispatch(deleteComment(commentIndex))
+        },
+        //回复评论
+        onReplyComment:(comment,commentIndex) => {
+            dispatch(replyComment(comment,commentIndex))
         }
     }
 }
