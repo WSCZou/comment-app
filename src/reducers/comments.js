@@ -28,9 +28,10 @@ export default function(state, action){//相当于34节中的 stateChanger
             }
         case REPLY_COMMENT:
             //回复评论
+            state.comments.splice(action.commentIndex,0,action.comment)
             return{
                 comments:[
-                    ...state.comments.splice(action.commentIndex,0,action.comment)
+                    ...state.comments
                 ]
             }
         default:

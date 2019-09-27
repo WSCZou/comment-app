@@ -7,6 +7,7 @@ class CommentList extends Component{
         comment: PropTypes.array,
         onDeleteComment: PropTypes.func,
         onReplyComment: PropTypes.func,
+        
     }
 
     static defaultProps = {
@@ -19,12 +20,13 @@ class CommentList extends Component{
         }
       }
     
-    handleReplyComment (comment,index) {
+    handleReplyComment (index) {
         if (this.props.onReplyComment) {
-            this.props.onReplyComment(comment,index)
+            this.props.onReplyComment(index)
         }
       }
-
+    
+    
     render(){
         return(
             <div>

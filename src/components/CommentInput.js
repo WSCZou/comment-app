@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Input, Avatar} from 'antd'
 import 'antd/dist/antd.css'
-
+import CommentList from '../containers/CommentList'
 
 const { TextArea } = Input;
 
@@ -13,7 +13,8 @@ export default class CommentInput extends Component{
         onSubmit: PropTypes.func,
         onUserNameInputBlur: PropTypes.func,
         header: PropTypes.any,
-        onEmailInputBlur:PropTypes.func
+        onEmailInputBlur:PropTypes.func,
+        onReply: PropTypes.func
 
     }
 
@@ -28,7 +29,8 @@ export default class CommentInput extends Component{
             username: props.username,//从 props 上取 username 字段
             content: '',
             header: props.header,//从 props 上取 头像
-            email:props.email//从 props 上取 email 字段
+            email:props.email,//从 props 上取 email 字段
+            
         }
         this.headerList = []
         for(let i= 0; i < 4; i++){
@@ -72,7 +74,7 @@ export default class CommentInput extends Component{
 
     handleSubmit(){
         if(this.props.onSubmit){
-            this.props.onSubmit({//这里传的是comment这个对象
+            this.props.onSubmit({ //这里传的是comment这个对象
                 username: this.state.username,
                 email: this.state.email,
                 content: this.state.content,
@@ -81,6 +83,16 @@ export default class CommentInput extends Component{
             })
         }
         this.setState({content: ''})
+    }
+
+    handleReply(){
+        return{
+            comment:{
+                username: this.state.username,
+                email: this.state.email,
+                content: this.state.content,
+                createdTime: +new Date(),
+                header: this.state.header}}
     }
 
     handleAvatar(event){
@@ -145,6 +157,8 @@ export default class CommentInput extends Component{
                         发布
                     </Button>
                 </div>
+                <CommentList
+                    onReply={this.handleReply()}/>
             </div>
 
             

@@ -12,7 +12,8 @@ class CommentListContainer extends Component{
         comments:PropTypes.array,//这个是initComments传的
         initComments:PropTypes.func,
         onDeleteComment: PropTypes.func,
-        onReplyComment: PropTypes.func
+        onReplyComment: PropTypes.func,
+        onReply: PropTypes.func
     }
 
     componentWillMount(){
@@ -27,7 +28,7 @@ class CommentListContainer extends Component{
         //this.props.initComment 是 connect 传进来的
         //可以帮我们把数据初始化到 state 里面去
         this.props.initComments(comments)
-        console.log(this.props)
+        //console.log(this.props)
     }
 
     handleDeleteComment(index){
@@ -48,12 +49,16 @@ class CommentListContainer extends Component{
         }
     }
 
-    handleReplyComment(comment,index){
+    handleReplyComment(index){
+        const { comment } = this.props.onReply() //现在这个comment 要从 input 来
         const { comments } = this.props
-        console.log(this.props)
+        const commentsp = comments.concat()//这里是重点 如果直接commentsp = comments 那只是引用 还是会改变原数组
+        //console.log(this.props)
         //props 是不能变的，所以这里新建一个回复了特定下标的评论列表
+        commentsp.splice(index,0,comment)
+        console.log(comments)
         const newComments = [          //这里切片是因为要把新的评论保存到 LocalStorage
-            ...comments.splice(index,0,comment)
+            ...commentsp
         ]
         //console.log(newComments)
         //保存最新的评论列表到 LocalStorage
@@ -65,6 +70,8 @@ class CommentListContainer extends Component{
         }
 
     }
+
+
     
     render(){
         return (

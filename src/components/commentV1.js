@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Avatar, Input, Button} from 'antd'
-import CommentInput from './CommentInput'
+
 
 class CommentV1 extends Component {
   static propType = {
     comment: PropTypes.object.isRequired,
     onDeleteComment: PropTypes.func,
     index: PropTypes.number,
-    onPostReply: PropTypes.func
+    onPostReply: PropTypes.func,
+    
   }
 
   constructor(){
@@ -50,11 +51,12 @@ class CommentV1 extends Component {
 //现在考虑comment怎么来 这个comment是要回复的评论 而 回复的内容comment怎么搞 ：要commentinput把数据传下来
   handleReplyComment(){
     if(this.props.onPostReply){
-        this.props.onPostReply(this.props.comment,this.props.index)
+        this.props.onPostReply(this.props.index)//现在要把 this.props.comment 换成 input 的数据
         //console.log(this.props.comment)
         //console.log(this.props.index)
       }
   }
+
 
   handleContentChange(event){
     this.setState({
