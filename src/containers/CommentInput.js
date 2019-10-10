@@ -10,7 +10,10 @@ import { addComment } from '../reducers/comments'
 class CommentContainer extends Component {
   static propTypes = {
     comments: PropTypes.array,
-    onSubmit: PropTypes.func
+    onSubmit: PropTypes.func,
+    content: PropTypes.any,
+    replyIndex: PropTypes.number
+    
   }
 
   constructor () {
@@ -69,11 +72,16 @@ class CommentContainer extends Component {
 
   handleSubmitComment (comment) {
     // 评论数据的验证
+    
     if (!comment) return
     if (!comment.username) return alert('请输入用户名')
     if (!comment.content) return alert('请输入评论内容')
     // 新增评论保存到 LocalStorage 中
-    const { comments } = this.props
+    const { comments } = this.props 
+    //console.log(this.props.comments)
+
+    console.log(this.props.replyIndex)
+    //console.log(this.props.content)
     const newComments = [comment, ...comments]
     localStorage.setItem('comments', JSON.stringify(newComments))
     // this.props.onSubmit 是 connect 传进来的
@@ -87,18 +95,23 @@ class CommentContainer extends Component {
     return (
       <CommentInput
         username={this.state.username}
+        content={this.props.content}
         email={this.state.email}
         onUserNameInputBlur={this._saveUsername.bind(this)}
         onSubmit={this.handleSubmitComment.bind(this)} 
         header={this.state.header} 
-        onEmailInputBlur={this._saveEmail.bind(this)}/>
+        onEmailInputBlur={this._saveEmail.bind(this)}
+        replyIndex = {this.props.replyIndex}/>
     )
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    comments: state.comments
+    comments: state.comments,
+    content: state.content,
+    replyIndex: state.replyIndex
+    
   }
 }
 

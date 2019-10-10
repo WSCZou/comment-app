@@ -2,7 +2,8 @@ import React,{ Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import CommentList from '../components/CommentList'
-import { initComments, deleteComment, replyComment } from '../reducers/comments'
+import { initComments, deleteComment, replyComment, replyContent } from '../reducers/comments'
+
 
 //CommentListContainer
 //一个 smart 组件，负责评论列表数据的加载，初始化，删除评论
@@ -13,7 +14,8 @@ class CommentListContainer extends Component{
         initComments:PropTypes.func,
         onDeleteComment: PropTypes.func,
         onReplyComment: PropTypes.func,
-        onReply: PropTypes.func
+        onReply: PropTypes.func,
+        onReplyContent: PropTypes.func
     }
 
     componentWillMount(){
@@ -33,7 +35,7 @@ class CommentListContainer extends Component{
 
     handleDeleteComment(index){
         const { comments } = this.props
-        console.log(this.props)
+        //console.log(this.props)
         //props 是不能变的，所以这里新建一个删除了特定下标的评论列表
         const newComments = [          //这里切片是因为要把新的评论保存到 LocalStorage
             ...comments.slice(0,index),
@@ -49,7 +51,7 @@ class CommentListContainer extends Component{
         }
     }
 
-    handleReplyComment(index){
+    /*handleReplyComment(index){
         const { comment } = this.props.onReply() //现在这个comment 要从 input 来
         const { comments } = this.props
         const commentsp = comments.concat()//这里是重点 如果直接commentsp = comments 那只是引用 还是会改变原数组
@@ -69,6 +71,17 @@ class CommentListContainer extends Component{
             this.props.onReplyComment(comment,index)
         }
 
+    }*/
+
+    handleReplyContent(index){
+        const { comments } = this.props
+        /*while(1){
+            console.log(comments[index].username)
+        }*/
+        
+        if(this.props.onReplyContent){
+            this.props.onReplyContent(comments[index].username,index)
+        }
     }
 
 
@@ -78,7 +91,7 @@ class CommentListContainer extends Component{
             <CommentList
                 comments={this.props.comments}
                 onDeleteComment={this.handleDeleteComment.bind(this)}
-                onReplyComment={this.handleReplyComment.bind(this)}/>
+                onReplyComment={this.handleReplyContent.bind(this)}/>
         )
     }
 }
@@ -102,10 +115,12 @@ const mapDispatchToProps = (dispatch) => {
         onDeleteComment: (commentIndex) => {
             dispatch(deleteComment(commentIndex))
         },
-        //回复评论
-        onReplyComment:(comment,commentIndex) => {
-            dispatch(replyComment(comment,commentIndex))
+
+        //@回复
+        onReplyContent:(content,replyIndex) => {
+            dispatch(replyContent(content,replyIndex))
         }
+        
     }
 }
 

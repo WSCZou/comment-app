@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Input, Avatar} from 'antd'
 import 'antd/dist/antd.css'
-import CommentList from '../containers/CommentList'
+
 
 const { TextArea } = Input;
 
@@ -14,20 +14,23 @@ export default class CommentInput extends Component{
         onUserNameInputBlur: PropTypes.func,
         header: PropTypes.any,
         onEmailInputBlur:PropTypes.func,
-        onReply: PropTypes.func
+        content: PropTypes.any,
+        replyIndex: PropTypes.any
 
     }
 
     static defaultProps = {
         username: '',
-        email:''
+        email:'',
+        content:'',
+        replyIndex: -1
     }
 
     constructor(props){
         super(props)
         this.state = {
             username: props.username,//从 props 上取 username 字段
-            content: '',
+            content: props.content,//从 props 上取 content 字段
             header: props.header,//从 props 上取 头像
             email:props.email,//从 props 上取 email 字段
             
@@ -74,14 +77,27 @@ export default class CommentInput extends Component{
 
     handleSubmit(){
         if(this.props.onSubmit){
-            this.props.onSubmit({ //这里传的是comment这个对象
-                username: this.state.username,
-                email: this.state.email,
-                content: this.state.content,
-                createdTime: +new Date(),
-                header: this.state.header
-            })
+            //console.log(this.props.replyIndex)
+            if(this.props.content){
+                this.props.onSubmit({ //这里传的是comment这个对象
+                    username: this.state.username,
+                    email: this.state.email,
+                    content: '@'+this.props.content+' , '+this.state.content,
+                    createdTime: +new Date(),
+                    header: this.state.header
+                },this.props.replyIndex)}
+            else{
+                
+                this.props.onSubmit({ //这里传的是comment这个对象
+                    username: this.state.username,
+                    email: this.state.email,
+                    content: this.state.content,
+                    createdTime: +new Date(),
+                    header: this.state.header
+                })
+            }
         }
+        
         this.setState({content: ''})
     }
 
@@ -157,8 +173,7 @@ export default class CommentInput extends Component{
                         发布
                     </Button>
                 </div>
-                <CommentList
-                    onReply={this.handleReply()}/>
+
             </div>
 
             
