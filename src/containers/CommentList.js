@@ -38,8 +38,8 @@ class CommentListContainer extends Component{
         //console.log(this.props)
         //props 是不能变的，所以这里新建一个删除了特定下标的评论列表
         if(childrenindex>=0){
-            comments[index].children.slice(0,childrenindex)
-            comments[index].children.slice(childrenindex+1)
+            comments[index].children.splice(childrenindex,1)
+            
             const newComments = [
                 ...comments
             ]
