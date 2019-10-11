@@ -77,15 +77,15 @@ export default class CommentInput extends Component{
 
     handleSubmit(){
         if(this.props.onSubmit){
-            //console.log(this.props.replyIndex)
             if(this.props.content){
                 this.props.onSubmit({ //这里传的是comment这个对象
                     username: this.state.username,
                     email: this.state.email,
                     content: '@'+this.props.content+' , '+this.state.content,
                     createdTime: +new Date(),
-                    header: this.state.header
-                },this.props.replyIndex)}
+                    header: this.state.header,
+                    children:[]
+                })}
             else{
                 
                 this.props.onSubmit({ //这里传的是comment这个对象
@@ -93,7 +93,8 @@ export default class CommentInput extends Component{
                     email: this.state.email,
                     content: this.state.content,
                     createdTime: +new Date(),
-                    header: this.state.header
+                    header: this.state.header,
+                    children:[]
                 })
             }
         }

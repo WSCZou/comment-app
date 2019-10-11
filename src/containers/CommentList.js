@@ -33,21 +33,32 @@ class CommentListContainer extends Component{
         //console.log(this.props)
     }
 
-    handleDeleteComment(index){
+    handleDeleteComment(index,childrenindex){
         const { comments } = this.props
         //console.log(this.props)
         //props 是不能变的，所以这里新建一个删除了特定下标的评论列表
-        const newComments = [          //这里切片是因为要把新的评论保存到 LocalStorage
-            ...comments.slice(0,index),
-            ...comments.slice(index + 1)
-        ]
+        if(childrenindex>=0){
+            comments[index].children.slice(0,childrenindex)
+            comments[index].children.slice(childrenindex+1)
+            const newComments = [
+                ...comments
+            ]
+            //保存最新的评论列表到 LocalStorage
+            localStorage.setItem('comments', JSON.stringify(newComments))
+        }
+        else{
+            const newComments = [          //这里切片是因为要把新的评论保存到 LocalStorage
+                ...comments.slice(0,index),
+                ...comments.slice(index + 1)
+            ]
+            //保存最新的评论列表到 LocalStorage
+            localStorage.setItem('comments', JSON.stringify(newComments))
+        }
         
-        //保存最新的评论列表到 LocalStorage
-        localStorage.setItem('comments', JSON.stringify(newComments))
         if(this.props.onDeleteComment){
             //this.props.onDeleteComment 是 connect 传进来的
             //会 dispatch 一个 action 去删除评论
-            this.props.onDeleteComment(index)
+            this.props.onDeleteComment(index,childrenindex)
         }
     }
 
@@ -73,14 +84,20 @@ class CommentListContainer extends Component{
 
     }*/
 
-    handleReplyContent(index){
+    handleReplyContent(index,childrenindex){
         const { comments } = this.props
         /*while(1){
             console.log(comments[index].username)
         }*/
         
         if(this.props.onReplyContent){
-            this.props.onReplyContent(comments[index].username,index)
+            if(childrenindex >= 0){
+                console.log(comments[index].children[childrenindex].username)
+                this.props.onReplyContent(comments[index].children[childrenindex].username,index)
+            }
+            else{
+                this.props.onReplyContent(comments[index].username,index)
+            }
         }
     }
 
@@ -98,6 +115,7 @@ class CommentListContainer extends Component{
 
 //评论列表从 state.comments 中获取
 const mapStateToProps = (state) => {
+    console.log(state.comments)
     return {
         comments: state.comments
     }
@@ -112,8 +130,8 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(initComments(comments))
         },
         //删除评论
-        onDeleteComment: (commentIndex) => {
-            dispatch(deleteComment(commentIndex))
+        onDeleteComment: (commentIndex,childrenindex) => {
+            dispatch(deleteComment(commentIndex,childrenindex))
         },
 
         //@回复

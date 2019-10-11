@@ -87,7 +87,7 @@ class CommentContainer extends Component {
     // this.props.onSubmit 是 connect 传进来的
     // 会 dispatch 一个 action 去新增评论
     if (this.props.onSubmit) {
-      this.props.onSubmit(comment)
+      this.props.onSubmit(comment,this.props.replyIndex)
     }
   }
 
@@ -117,8 +117,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSubmit: (comment) => {
-      dispatch(addComment(comment))
+    onSubmit: (comment,replyIndex) => {
+      dispatch(addComment(comment,replyIndex))
     }
   }
 }

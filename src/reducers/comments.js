@@ -23,18 +23,44 @@ export default function(state, action){//相当于34节中的 stateChanger
             }
         case ADD_COMMENT:
             //新增评论
-            return {
-                comments:[action.comment,...state.comments],
-                replyIndex: -1
+            
+            if(action.replyIndex !== -1){
+                state.comments[action.replyIndex].children.push(action.comment)
+                return{
+                    comments:[...state.comments],
+                    replyIndex: -1
+                }
+            }
+            else{
+                return {
+                    comments:[action.comment,...state.comments],
+                    replyIndex: -1
+                }
             }
         case DELETE_COMMENT:
             //删除评论
-            return{
-                comments:[
-                    ...state.comments.slice(0,action.commentIndex),
-                    ...state.comments.slice(action.commentIndex+1)
-                ]
+            //console.log(action.childrenindex+'!!!!')
+            if(action.childrenindex>=0){
+                state.comments[action.commentIndex].children.splice(action.childrenindex,1)
+                
+                //console.log(state.comments[action.commentIndex].children+'!!!!!')
+                return{ 
+                    comments : [
+                        ...state.comments
+                    ],
+                    replyIndex: -1
+                }
             }
+            else{
+                return{
+                    comments:[
+                        ...state.comments.slice(0,action.commentIndex),
+                        ...state.comments.slice(action.commentIndex+1)
+                    ],
+                    replyIndex: -1
+                }
+            }
+            
         case REPLY_COMMENT:
             //回复评论
             state.comments.splice(action.commentIndex,0,action.comment)
@@ -60,12 +86,12 @@ export const initComments = (comments) => {
     return {type:INIT_COMMENTS, comments}
 }
 
-export const addComment = (comment) => {
-    return { type: ADD_COMMENT,comment}
+export const addComment = (comment,replyIndex) => {
+    return { type: ADD_COMMENT,comment,replyIndex}
 }
 
-export const deleteComment = (commentIndex) => {
-    return {type:DELETE_COMMENT, commentIndex}
+export const deleteComment = (commentIndex,childrenindex) => {
+    return {type:DELETE_COMMENT, commentIndex,childrenindex}
 }
 
 export const replyComment = (comment,commentIndex) => {

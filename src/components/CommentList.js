@@ -14,15 +14,15 @@ class CommentList extends Component{
         comments: []
     }
 
-    handleDeleteComment (index) {
+    handleDeleteComment (index,childrenindex) {
         if (this.props.onDeleteComment) {
-          this.props.onDeleteComment(index)
+          this.props.onDeleteComment(index,childrenindex)
         }
       }
     
-    handleReplyComment (index) {
+    handleReplyComment (index,childrenindex) {
         if (this.props.onReplyComment) {
-            this.props.onReplyComment(index)
+            this.props.onReplyComment(index,childrenindex)
         }
       }
     
@@ -30,12 +30,29 @@ class CommentList extends Component{
     render(){
         return(
             <div>
-            {this.props.comments.map((comment,i) =>
-             <CommentV1 comment={comment} 
-                      key={i} 
-                      index={i} 
-                      onDeleteComment={this.handleDeleteComment.bind(this)}
-                      onPostReply={this.handleReplyComment.bind(this)}/>)}
+            {
+                this.props.comments.map((comment,i) =>{
+                    return(
+                    <div key={i}>
+                    <CommentV1 
+                    comment={comment} 
+                    key={i} 
+                    index={i} 
+                    onDeleteComment={this.handleDeleteComment.bind(this)}
+                    onPostReply={this.handleReplyComment.bind(this)}/>
+                    {
+                        comment.children.map((childComment,j) => (
+                            <CommentV1 
+                            comment={childComment} 
+                            key={j} 
+                            index={i}
+                            childrenindex={j} 
+                            onDeleteComment={this.handleDeleteComment.bind(this)}
+                            onPostReply={this.handleReplyComment.bind(this)}/>
+                        ))
+                    }
+                    </div>)
+                })}
             </div>
         )
     }

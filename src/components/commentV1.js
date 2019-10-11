@@ -9,6 +9,7 @@ class CommentV1 extends Component {
     onDeleteComment: PropTypes.func,
     index: PropTypes.number,
     onPostReply: PropTypes.func,
+    childrenindex: PropTypes.number
     
   }
 
@@ -44,16 +45,17 @@ class CommentV1 extends Component {
 
   handleDeleteComment(){
     if(this.props.onDeleteComment){
-      this.props.onDeleteComment(this.props.index)
+      console.log(this.props.childrenindex)
+      this.props.onDeleteComment(this.props.index,this.props.childrenindex)
     }
   }
 
 //现在考虑comment怎么来 这个comment是要回复的评论 而 回复的内容comment怎么搞 ：要commentinput把数据传下来
   handleReplyComment(){
     if(this.props.onPostReply){
-        this.props.onPostReply(this.props.index)//现在要把 this.props.comment 换成 input 的数据
+        this.props.onPostReply(this.props.index,this.props.childrenindex)//现在要把 this.props.comment 换成 input 的数据
         //console.log(this.props.comment)
-        //console.log(this.props.index)
+        //console.log(this.props.childrenindex+'!')
       }
   }
 
