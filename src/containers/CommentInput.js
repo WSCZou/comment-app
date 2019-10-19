@@ -82,8 +82,18 @@ class CommentContainer extends Component {
 
     console.log(this.props.replyIndex)
     //console.log(this.props.content)
-    const newComments = [comment, ...comments]
-    localStorage.setItem('comments', JSON.stringify(newComments))
+    if(this.props.replyIndex !== -1){
+      let commentsp = JSON.parse(JSON.stringify(comments))      
+      commentsp[this.props.replyIndex].children.push(comment)      
+      const newComments = [...commentsp]     
+      localStorage.setItem('comments', JSON.stringify(newComments))
+      
+    }
+    else{
+      const newComments = [comment, ...comments]
+      localStorage.setItem('comments', JSON.stringify(newComments))
+    }
+
     // this.props.onSubmit 是 connect 传进来的
     // 会 dispatch 一个 action 去新增评论
     if (this.props.onSubmit) {

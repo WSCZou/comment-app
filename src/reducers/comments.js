@@ -25,7 +25,9 @@ export default function(state, action){//相当于34节中的 stateChanger
             //新增评论
             
             if(action.replyIndex !== -1){
+                console.log(state.comments)
                 state.comments[action.replyIndex].children.push(action.comment)
+                
                 return{
                     comments:[...state.comments],
                     replyIndex: -1
@@ -41,9 +43,10 @@ export default function(state, action){//相当于34节中的 stateChanger
             //删除评论
             //console.log(action.childrenindex+'!!!!')
             if(action.childrenindex>=0){
+                console.log(state.comments[action.commentIndex].children[action.childrenindex])
                 state.comments[action.commentIndex].children.splice(action.childrenindex,1)
                 
-                //console.log(state.comments[action.commentIndex].children+'!!!!!')
+                //console.log(state.comments[action.commentIndex].children)
                 return{ 
                     comments : [
                         ...state.comments

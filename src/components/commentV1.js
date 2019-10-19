@@ -55,7 +55,7 @@ class CommentV1 extends Component {
     if(this.props.onPostReply){
         this.props.onPostReply(this.props.index,this.props.childrenindex)//现在要把 this.props.comment 换成 input 的数据
         //console.log(this.props.comment)
-        //console.log(this.props.childrenindex+'!')
+        //console.log(this.props.index+'!'+this.props.childrenindex+'!')
       }
   }
 
@@ -79,6 +79,7 @@ class CommentV1 extends Component {
 
   render () {
     const { comment } = this.props
+    //console.log(this.props.index+'!'+this.props.childrenindex+'!')
     return (
       <div className='comment'>
         <div className='comment-user'>

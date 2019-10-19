@@ -35,21 +35,25 @@ class CommentListContainer extends Component{
 
     handleDeleteComment(index,childrenindex){
         const { comments } = this.props
-        //console.log(this.props)
+        const commentsp = JSON.parse(JSON.stringify(comments))
+        //console.log(commentsp)
         //props 是不能变的，所以这里新建一个删除了特定下标的评论列表
         if(childrenindex>=0){
-            comments[index].children.splice(childrenindex,1)
+            //console.log(commentsp[index].children[childrenindex])
+            commentsp[index].children.splice(childrenindex,1)
             
             const newComments = [
-                ...comments
+                ...commentsp
             ]
+            console.log(commentsp)
+            console.log(newComments)
             //保存最新的评论列表到 LocalStorage
             localStorage.setItem('comments', JSON.stringify(newComments))
         }
         else{
             const newComments = [          //这里切片是因为要把新的评论保存到 LocalStorage
-                ...comments.slice(0,index),
-                ...comments.slice(index + 1)
+                ...commentsp.slice(0,index),
+                ...commentsp.slice(index + 1)
             ]
             //保存最新的评论列表到 LocalStorage
             localStorage.setItem('comments', JSON.stringify(newComments))
